@@ -1,0 +1,2 @@
+The MLP model achieved high training accuracy but showed clear signs of overfitting after several epochs, indicating its inability to generalize effectively on sequential flux data.
+
