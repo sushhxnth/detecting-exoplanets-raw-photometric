@@ -1,0 +1,74 @@
+Light-curve (time series signal data)
+Training set  split into:
+    train (80%)
+    validation (20%) for tuning (early stopping, hyperparameters)
+
+Test → untouched (final evaluation only)(unbiased)
+Models used for deeper analysis : (only compatible for our light curve sequence dataset)
+1.MLP --baseline
+2.CNN -- spatial learning
+3.LSTM -- temporal learning
+4.GRU(Simpler version of LSTM)
+5.HYBRID(CNN + LSTM) -- Hybrid learning
+6.transformers(advanced)
+
+1. MLP Model
+Used cross entropy for 
+- multi class classification
+- automatically applies softmax(positves and negatives into probabilities)
+intial - Validation Accuracy: 0.9921414256095886 (overfit), why? cuz MLP ignores sequence structure and Treats data as flat vector
+The MLP model achieved high training accuracy but showed clear signs of overfitting after several epochs, indicating its inability to generalize effectively on sequential flux data.
+after adding weight_decay 1e-05 - underfitted 
+
+
+
+
+
+2. CNN 
+gave 2 layers 
+initial - Validation Accuracy: 0.9921414256095886
+now after batch training and updated loop - Validation Accuracy: 0.9921414256095886 - noticed changes are train loss decreased from epoch 1 to 20 (but not in linear fashion) nad val loss decreased from 84 to 3 (but got spiked up at epoch 9)
+after batch training + updated nn conv1d -Validation Accuracy: 0.9921414256095886
+ the train loss came down (but not gradually) and val loss came down too but not gradually too 
+ [[1010    0]
+ [   8    0]] - confusion matrix 
+               precision    recall  f1-score   support
+...
+weighted avg       0.98      0.99      0.99      1018
+
+tensor([   0, 4040,   29])
+tensor([   0, 1010,    8]) - class distributionn
+
+this is after giving stratify=y and changed classes from 3 to 2 by y = y-1
+Validation Accuracy: 0.9931237697601318
+[1010    1]
+...
+    accuracy                           0.99      1018
+   macro avg       0.75      0.57      0.61      1018
+weighted avg       0.99      0.99      0.99      1018
+
+“Predict class 0 almost always → high accuracy” -- Even with class weights, it’s still biased.
+
+model behavior:
+Good at detecting normal signals
+Bad at detecting rare exoplanets
+
+now - working model to research level model 
+using manual weights instead - weights = torch.tensor([1.0, 50.0]) (forcing model to are abt rare classes) - even tho we changed the manual weights nothing changed cuz the imbalance is 4039 : 30  ≈ 135 : 1
+
+now after adding weighted random sampler only (not manual weights)- Validation Accuracy: 0.9646365642547607
+[981  30]
+...
+    accuracy                           0.96      1018
+   macro avg       0.51      0.56      0.52      1018
+weighted avg       0.99      0.96      0.98      1018
+
+More recall (catch rare planets)
+↓
+More false positives
+↓
+Lower accuracy
+
+
+
+3. LSTM 

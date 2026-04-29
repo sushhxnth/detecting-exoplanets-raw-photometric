@@ -1,0 +1,7 @@
+MLP -- forward pass
+loss + backprop
+training loop
+torch.no_grad()
+
+cnn -- unsqueeze 
+
