@@ -129,6 +129,26 @@ weighted avg       0.99      0.96      0.97      1018 -- this is after increasin
 - this is the best balanced model so far 
 
 
+VALIDATION RESULTS
+Accuracy: 0.9872298624754421
+
+Confusion Matrix
+[[1005    6]
+ [   7    0]]
+
+Classification Report
+              precision    recall  f1-score   support
+
+           0       0.99      0.99      0.99      1011
+           1       0.00      0.00      0.00         7
+
+    accuracy                           0.99      1018
+   macro avg       0.50      0.50      0.50      1018
+weighted avg       0.99      0.99      0.99      1018
+
+Adding attention mechanisms did not improve performance
+under extreme class imbalance and limited training data.
+
 
 Accuracy: 0.7966601252555847
 [[808 203]
@@ -142,6 +162,8 @@ Accuracy: 0.7966601252555847
    macro avg       0.51      0.72      0.49       570
 weighted avg       0.99      0.84      0.91       570 -- this is for unseen test data - 15 epochs
 
+
+"Precision–Recall analysis of the proposed CNN-LSTM hybrid architecture demonstrating improved rare exoplanet candidate detection under severe class imbalance conditions."[for precision recall graph caption]
 
 5. transformers
 Validation Accuracy: 0.0068762279115617275
@@ -165,3 +187,8 @@ weighted avg       0.99      0.99      0.99      1018 --removed sampler + reduce
 - we are seeing both extremes here - one with sampler and one without = so transformers not learning the rare classes but choosing the easiest global strategy
 
 Transformers are NOT suitable for small, highly imbalanced time-series datasets
+
+Transformers demonstrated interpretable attention behavior
+but failed to achieve robust classification performance
+under limited and highly imbalanced training conditions. [This is for Attention map ] 
+"Attention visualization of the Transformer-based model indicating sequence regions prioritized during exoplanet classification." - caption
